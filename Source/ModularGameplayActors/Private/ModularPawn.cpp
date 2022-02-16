@@ -1,13 +1,12 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "ModularPawn.h"
-#include "Components/GameFrameworkComponentManager.h"
+
+#include <Components/GameFrameworkComponentManager.h>
 
 void AModularPawn::PreInitializeComponents()
 {
-	Super::PreInitializeComponents();
+    Super::PreInitializeComponents();
 
-if ( auto * gi = GetGameInstance() )
+    if ( auto * gi = GetGameInstance() )
     {
         if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
         {
@@ -21,15 +20,15 @@ void AModularPawn::BeginPlay()
     // UE5 specific
     // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
-	Super::BeginPlay();
+    Super::BeginPlay();
 }
 
-void AModularPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AModularPawn::EndPlay( const EEndPlayReason::Type EndPlayReason )
 {
     if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
     {
         system->RemoveReceiver( this );
     }
 
-	Super::EndPlay(EndPlayReason);
+    Super::EndPlay( EndPlayReason );
 }

@@ -1,13 +1,12 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "ModularAIController.h"
-#include "Components/GameFrameworkComponentManager.h"
+
+#include <Components/GameFrameworkComponentManager.h>
 
 void AModularAIController::PreInitializeComponents()
 {
-	Super::PreInitializeComponents();
+    Super::PreInitializeComponents();
 
-	if ( auto * gi = GetGameInstance() )
+    if ( auto * gi = GetGameInstance() )
     {
         if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
         {
@@ -18,18 +17,18 @@ void AModularAIController::PreInitializeComponents()
 
 void AModularAIController::BeginPlay()
 {
-	// UE5 specific
+    // UE5 specific
     // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
-	Super::BeginPlay();
+    Super::BeginPlay();
 }
 
-void AModularAIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AModularAIController::EndPlay( const EEndPlayReason::Type EndPlayReason )
 {
     if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
     {
         system->RemoveReceiver( this );
     }
 
-	Super::EndPlay(EndPlayReason);
+    Super::EndPlay( EndPlayReason );
 }
