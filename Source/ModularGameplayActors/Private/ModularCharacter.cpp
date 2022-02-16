@@ -7,19 +7,29 @@ void AModularCharacter::PreInitializeComponents()
 {
 	Super::PreInitializeComponents();
 
-	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
+if ( auto * gi = GetGameInstance() )
+    {
+        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
+        {
+            system->AddReceiver( this );
+        }
+    }
 }
 
 void AModularCharacter::BeginPlay()
 {
-	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    // UE5 specific
+    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
 	Super::BeginPlay();
 }
 
 void AModularCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
+    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
+    {
+        system->RemoveReceiver( this );
+    }
 
 	Super::EndPlay(EndPlayReason);
 }

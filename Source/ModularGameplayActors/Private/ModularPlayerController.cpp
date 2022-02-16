@@ -8,12 +8,21 @@ void AModularPlayerController::PreInitializeComponents()
 {
 	Super::PreInitializeComponents();
 
-	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
+if ( auto * gi = GetGameInstance() )
+    {
+        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
+        {
+            system->AddReceiver( this );
+        }
+    }
 }
 
 void AModularPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
+    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
+    {
+        system->RemoveReceiver( this );
+    }
 
 	Super::EndPlay(EndPlayReason);
 }
@@ -21,7 +30,8 @@ void AModularPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AModularPlayerController::ReceivedPlayer()
 {
 	// Player controllers always get assigned a player and can't do much until then
-	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    // UE5 specific
+    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
 	Super::ReceivedPlayer();
 
