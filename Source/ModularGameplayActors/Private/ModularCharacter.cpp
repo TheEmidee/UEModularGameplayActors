@@ -1,5 +1,7 @@
 #include "ModularCharacter.h"
 
+#include "ModularPawnComponent.h"
+
 #include <Components/GameFrameworkComponentManager.h>
 
 void AModularCharacter::PreInitializeComponents()
@@ -31,4 +33,26 @@ void AModularCharacter::EndPlay( const EEndPlayReason::Type EndPlayReason )
     }
 
     Super::EndPlay( EndPlayReason );
+}
+
+void AModularCharacter::UnPossessed()
+{
+    Super::UnPossessed();
+
+    TInlineComponentArray< UModularPawnComponent * > components( this );
+    for ( auto * component : components )
+    {
+        component->OnUnPossessed();
+    }
+}
+
+void AModularCharacter::PossessedBy( AController * new_controller )
+{
+    Super::PossessedBy( new_controller );
+
+    TInlineComponentArray< UModularPawnComponent * > components( this );
+    for ( auto * component : components )
+    {
+        component->OnPossessedBy( new_controller );
+    }
 }
