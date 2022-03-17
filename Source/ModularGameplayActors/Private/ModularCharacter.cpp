@@ -37,13 +37,13 @@ void AModularCharacter::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void AModularCharacter::UnPossessed()
 {
-    Super::UnPossessed();
-
     TInlineComponentArray< UModularPawnComponent * > components( this );
     for ( auto * component : components )
     {
         component->OnUnPossessed();
     }
+    
+    Super::UnPossessed();
 }
 
 void AModularCharacter::PossessedBy( AController * new_controller )
