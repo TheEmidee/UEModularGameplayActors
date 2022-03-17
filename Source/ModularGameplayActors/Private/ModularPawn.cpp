@@ -1,5 +1,7 @@
 #include "ModularPawn.h"
 
+#include "ModularPawnComponent.h"
+
 #include <Components/GameFrameworkComponentManager.h>
 
 void AModularPawn::PreInitializeComponents()
@@ -31,4 +33,26 @@ void AModularPawn::EndPlay( const EEndPlayReason::Type EndPlayReason )
     }
 
     Super::EndPlay( EndPlayReason );
+}
+
+void AModularPawn::UnPossessed()
+{
+    TInlineComponentArray< UModularPawnComponent * > components( this );
+    for ( auto * component : components )
+    {
+        component->OnUnPossessed();
+    }
+
+    Super::UnPossessed();
+}
+
+void AModularPawn::PossessedBy( AController * new_controller )
+{
+    Super::PossessedBy( new_controller );
+
+    TInlineComponentArray< UModularPawnComponent * > components( this );
+    for ( auto * component : components )
+    {
+        component->OnPossessedBy( new_controller );
+    }
 }

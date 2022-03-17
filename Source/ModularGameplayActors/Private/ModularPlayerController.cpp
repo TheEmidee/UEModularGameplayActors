@@ -34,8 +34,7 @@ void AModularPlayerController::ReceivedPlayer()
 
     Super::ReceivedPlayer();
 
-    TArray< UControllerComponent * > ModularComponents;
-    GetComponents( ModularComponents );
+    TInlineComponentArray< UControllerComponent * > ModularComponents( this );
     for ( UControllerComponent * Component : ModularComponents )
     {
         Component->ReceivedPlayer();
@@ -46,8 +45,7 @@ void AModularPlayerController::PlayerTick( float DeltaTime )
 {
     Super::PlayerTick( DeltaTime );
 
-    TArray< UControllerComponent * > ModularComponents;
-    GetComponents( ModularComponents );
+    TInlineComponentArray< UControllerComponent * > ModularComponents( this );
     for ( UControllerComponent * Component : ModularComponents )
     {
         Component->PlayerTick( DeltaTime );

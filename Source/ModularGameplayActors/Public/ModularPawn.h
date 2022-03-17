@@ -16,4 +16,7 @@ public:
     void BeginPlay() override;
     void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
     //~ End AActor interface
+
+    void UnPossessed() override;
+    void PossessedBy( AController * new_controller ) override;
 };
