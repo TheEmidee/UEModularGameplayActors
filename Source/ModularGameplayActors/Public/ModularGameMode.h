@@ -1,26 +1,39 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "GameFramework/GameMode.h"
+#include <GameFramework/GameMode.h>
+
 #include "ModularGameMode.generated.h"
 
 /** Pair this with a ModularGameStateBase */
-UCLASS(Blueprintable)
+UCLASS( Blueprintable )
 class MODULARGAMEPLAYACTORS_API AModularGameModeBase : public AGameModeBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	AModularGameModeBase();
+    AModularGameModeBase();
+
+    void PreInitializeComponents() override;
+
+protected:
+    void BeginPlay() override;
+    void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
 };
 
 /** Pair this with a ModularGameState */
-UCLASS(Blueprintable)
+UCLASS( Blueprintable )
 class MODULARGAMEPLAYACTORS_API AModularGameMode : public AGameMode
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	AModularGameMode();
+    AModularGameMode();
+
+    bool ReadyToStartMatch_Implementation() override;
+    void PreInitializeComponents() override;
+
+protected:
+    void BeginPlay() override;
+    void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
+    void HandleMatchHasStarted() override;
 };
