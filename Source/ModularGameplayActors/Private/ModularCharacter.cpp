@@ -19,8 +19,7 @@ void AModularCharacter::PreInitializeComponents()
 
 void AModularCharacter::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }

@@ -18,8 +18,7 @@ void AModularGameStateBase::PreInitializeComponents()
 
 void AModularGameStateBase::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }
@@ -49,8 +48,7 @@ void AModularGameState::PreInitializeComponents()
 
 void AModularGameState::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }
