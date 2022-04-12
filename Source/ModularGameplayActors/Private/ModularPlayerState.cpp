@@ -37,11 +37,9 @@ void AModularPlayerState::Reset()
 {
     Super::Reset();
 
-    TArray< UPlayerStateComponent * > ModularComponents;
-    GetComponents( ModularComponents );
-    for ( UPlayerStateComponent * Component : ModularComponents )
+    for ( TComponentIterator < UPlayerStateComponent > iterator( this ); iterator; ++iterator )
     {
-        Component->Reset();
+        iterator->Reset();
     }
 }
 

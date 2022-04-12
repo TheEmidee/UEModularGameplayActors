@@ -65,12 +65,10 @@ void AModularGameState::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void AModularGameState::HandleMatchHasStarted()
 {
-    TInlineComponentArray< UGameStateComponent * > components( this );
-    
     Super::HandleMatchHasStarted();
 
-    for ( UGameStateComponent * Component : components )
+    for ( TComponentIterator< UGameStateComponent > iterator( this ); iterator; ++iterator )
     {
-        Component->HandleMatchHasStarted();
+        iterator->HandleMatchHasStarted();
     }
 }

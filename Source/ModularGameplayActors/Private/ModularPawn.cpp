@@ -36,10 +36,9 @@ void AModularPawn::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void AModularPawn::UnPossessed()
 {
-    TInlineComponentArray< UModularPawnComponent * > components( this );
-    for ( auto * component : components )
+    for ( TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator )
     {
-        component->OnUnPossessed();
+        iterator->OnUnPossessed();
     }
 
     Super::UnPossessed();
@@ -49,9 +48,8 @@ void AModularPawn::PossessedBy( AController * new_controller )
 {
     Super::PossessedBy( new_controller );
 
-    TInlineComponentArray< UModularPawnComponent * > components( this );
-    for ( auto * component : components )
+    for ( TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator )
     {
-        component->OnPossessedBy( new_controller );
+        iterator->OnPossessedBy( new_controller );
     }
 }
