@@ -1,18 +1,18 @@
 #include "ModularGameMode.h"
 
+#include "Components/GameFrameworkComponentManager.h"
 #include "ModularGameModeComponent.h"
 #include "ModularGameState.h"
+#include "ModularPawn.h"
 #include "ModularPlayerController.h"
 #include "ModularPlayerState.h"
-#include "ModularPawn.h"
-#include "Components/GameFrameworkComponentManager.h"
 
 AModularGameModeBase::AModularGameModeBase()
 {
-	GameStateClass = AModularGameStateBase::StaticClass();
-	PlayerControllerClass = AModularPlayerController::StaticClass();
-	PlayerStateClass = AModularPlayerState::StaticClass();
-	DefaultPawnClass = AModularPawn::StaticClass();
+    GameStateClass = AModularGameStateBase::StaticClass();
+    PlayerControllerClass = AModularPlayerController::StaticClass();
+    PlayerStateClass = AModularPlayerState::StaticClass();
+    DefaultPawnClass = AModularPawn::StaticClass();
 }
 
 void AModularGameModeBase::PreInitializeComponents()
@@ -30,8 +30,7 @@ void AModularGameModeBase::PreInitializeComponents()
 
 void AModularGameModeBase::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }
@@ -48,10 +47,10 @@ void AModularGameModeBase::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 AModularGameMode::AModularGameMode()
 {
-	GameStateClass = AModularGameState::StaticClass();
-	PlayerControllerClass = AModularPlayerController::StaticClass();
-	PlayerStateClass = AModularPlayerState::StaticClass();
-	DefaultPawnClass = AModularPawn::StaticClass();
+    GameStateClass = AModularGameState::StaticClass();
+    PlayerControllerClass = AModularPlayerController::StaticClass();
+    PlayerStateClass = AModularPlayerState::StaticClass();
+    DefaultPawnClass = AModularPawn::StaticClass();
 }
 
 bool AModularGameMode::ReadyToStartMatch_Implementation()
@@ -84,8 +83,7 @@ void AModularGameMode::PreInitializeComponents()
 
 void AModularGameMode::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }
@@ -102,11 +100,9 @@ void AModularGameMode::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void AModularGameMode::HandleMatchHasStarted()
 {
-    TInlineComponentArray< UModularGameModeComponent * > flow_components( this );
-
-    for ( auto * component : flow_components )
+    for ( TComponentIterator< UModularGameModeComponent > iterator( this ); iterator; ++iterator )
     {
-        component->HandleMatchHasStarted();
+        iterator->HandleMatchHasStarted();
     }
 
     Super::HandleMatchHasStarted();

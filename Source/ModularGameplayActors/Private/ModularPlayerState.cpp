@@ -18,8 +18,7 @@ void AModularPlayerState::PreInitializeComponents()
 
 void AModularPlayerState::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }
@@ -38,11 +37,9 @@ void AModularPlayerState::Reset()
 {
     Super::Reset();
 
-    TArray< UPlayerStateComponent * > ModularComponents;
-    GetComponents( ModularComponents );
-    for ( UPlayerStateComponent * Component : ModularComponents )
+    for ( TComponentIterator < UPlayerStateComponent > iterator( this ); iterator; ++iterator )
     {
-        Component->Reset();
+        iterator->Reset();
     }
 }
 

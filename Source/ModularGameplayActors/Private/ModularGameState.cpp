@@ -18,8 +18,7 @@ void AModularGameStateBase::PreInitializeComponents()
 
 void AModularGameStateBase::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }
@@ -49,8 +48,7 @@ void AModularGameState::PreInitializeComponents()
 
 void AModularGameState::BeginPlay()
 {
-    // UE5 specific
-    // UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
     Super::BeginPlay();
 }
@@ -67,12 +65,10 @@ void AModularGameState::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void AModularGameState::HandleMatchHasStarted()
 {
-    TInlineComponentArray< UGameStateComponent * > components( this );
-    
     Super::HandleMatchHasStarted();
 
-    for ( UGameStateComponent * Component : components )
+    for ( TComponentIterator< UGameStateComponent > iterator( this ); iterator; ++iterator )
     {
-        Component->HandleMatchHasStarted();
+        iterator->HandleMatchHasStarted();
     }
 }
