@@ -8,3 +8,7 @@ bool UModularGameModeComponent::IsReadyToStartMatch() const
 void UModularGameModeComponent::HandleMatchHasStarted()
 {
 }
+
+void UModularGameModeComponent::OnInitGameState()
+{
+}

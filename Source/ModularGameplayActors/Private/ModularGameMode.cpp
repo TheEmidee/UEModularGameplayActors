@@ -81,6 +81,16 @@ void AModularGameMode::PreInitializeComponents()
     }
 }
 
+void AModularGameMode::InitGameState()
+{
+    Super::InitGameState();
+
+    for ( TComponentIterator< UModularGameModeComponent > iterator( this ); iterator; ++iterator )
+    {
+        iterator->OnInitGameState();
+    }
+}
+
 void AModularGameMode::BeginPlay()
 {
     UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
