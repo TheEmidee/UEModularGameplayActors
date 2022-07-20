@@ -31,6 +31,7 @@ public:
 
     bool ReadyToStartMatch_Implementation() override;
     void PreInitializeComponents() override;
+    void InitGameState() override;
 
 protected:
     void BeginPlay() override;
