@@ -110,10 +110,10 @@ void AModularGameMode::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void AModularGameMode::HandleMatchHasStarted()
 {
+    Super::HandleMatchHasStarted();
+
     for ( TComponentIterator< UModularGameModeComponent > iterator( this ); iterator; ++iterator )
     {
         iterator->HandleMatchHasStarted();
     }
-
-    Super::HandleMatchHasStarted();
 }
