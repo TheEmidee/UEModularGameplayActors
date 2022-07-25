@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GameFramework/GameModeBase.h"
+
 #include <Components/GameFrameworkComponent.h>
 #include <CoreMinimal.h>
 
@@ -27,4 +29,5 @@ public:
 
     virtual bool IsReadyToStartMatch() const;
     virtual void HandleMatchHasStarted();
+    virtual void OnInitGameState();
 };

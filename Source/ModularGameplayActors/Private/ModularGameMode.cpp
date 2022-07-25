@@ -81,6 +81,16 @@ void AModularGameMode::PreInitializeComponents()
     }
 }
 
+void AModularGameMode::InitGameState()
+{
+    Super::InitGameState();
+
+    for ( TComponentIterator< UModularGameModeComponent > iterator( this ); iterator; ++iterator )
+    {
+        iterator->OnInitGameState();
+    }
+}
+
 void AModularGameMode::BeginPlay()
 {
     UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
@@ -100,10 +110,10 @@ void AModularGameMode::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void AModularGameMode::HandleMatchHasStarted()
 {
+    Super::HandleMatchHasStarted();
+
     for ( TComponentIterator< UModularGameModeComponent > iterator( this ); iterator; ++iterator )
     {
         iterator->HandleMatchHasStarted();
     }
-
-    Super::HandleMatchHasStarted();
 }
