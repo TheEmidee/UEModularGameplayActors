@@ -1,31 +1,30 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #include "ModularGameMode.h"
 
-#include "Components/GameFrameworkComponentManager.h"
 #include "ModularGameModeComponent.h"
 #include "ModularGameState.h"
 #include "ModularPawn.h"
 #include "ModularPlayerController.h"
 #include "ModularPlayerState.h"
+#include "Components/GameFrameworkComponentManager.h"
 
-AModularGameModeBase::AModularGameModeBase()
+#include UE_INLINE_GENERATED_CPP_BY_NAME(ModularGameMode)
+
+AModularGameModeBase::AModularGameModeBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
-    GameStateClass = AModularGameStateBase::StaticClass();
-    PlayerControllerClass = AModularPlayerController::StaticClass();
-    PlayerStateClass = AModularPlayerState::StaticClass();
-    DefaultPawnClass = AModularPawn::StaticClass();
+	GameStateClass = AModularGameStateBase::StaticClass();
+	PlayerControllerClass = AModularPlayerController::StaticClass();
+	PlayerStateClass = AModularPlayerState::StaticClass();
+	DefaultPawnClass = AModularPawn::StaticClass();
 }
 
 void AModularGameModeBase::PreInitializeComponents()
 {
     Super::PreInitializeComponents();
 
-    if ( auto * gi = GetGameInstance() )
-    {
-        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
-        {
-            system->AddReceiver( this );
-        }
-    }
+    UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver( this );
 }
 
 void AModularGameModeBase::BeginPlay()
@@ -37,20 +36,18 @@ void AModularGameModeBase::BeginPlay()
 
 void AModularGameModeBase::EndPlay( const EEndPlayReason::Type EndPlayReason )
 {
-    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
-    {
-        system->RemoveReceiver( this );
-    }
+    UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver( this );
 
     Super::EndPlay( EndPlayReason );
 }
 
-AModularGameMode::AModularGameMode()
+AModularGameMode::AModularGameMode(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
-    GameStateClass = AModularGameState::StaticClass();
-    PlayerControllerClass = AModularPlayerController::StaticClass();
-    PlayerStateClass = AModularPlayerState::StaticClass();
-    DefaultPawnClass = AModularPawn::StaticClass();
+	GameStateClass = AModularGameState::StaticClass();
+	PlayerControllerClass = AModularPlayerController::StaticClass();
+	PlayerStateClass = AModularPlayerState::StaticClass();
+	DefaultPawnClass = AModularPawn::StaticClass();
 }
 
 bool AModularGameMode::ReadyToStartMatch_Implementation()
@@ -72,13 +69,7 @@ void AModularGameMode::PreInitializeComponents()
 {
     Super::PreInitializeComponents();
 
-    if ( auto * gi = GetGameInstance() )
-    {
-        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
-        {
-            system->AddReceiver( this );
-        }
-    }
+    UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver( this );
 }
 
 void AModularGameMode::InitGameState()
@@ -100,10 +91,7 @@ void AModularGameMode::BeginPlay()
 
 void AModularGameMode::EndPlay( const EEndPlayReason::Type EndPlayReason )
 {
-    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
-    {
-        system->RemoveReceiver( this );
-    }
+    UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver( this );
 
     Super::EndPlay( EndPlayReason );
 }

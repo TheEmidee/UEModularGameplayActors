@@ -1,74 +1,64 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #include "ModularGameState.h"
 
-#include <Components/GameFrameworkComponentManager.h>
-#include <Components/GameStateComponent.h>
+#include "Components/GameFrameworkComponentManager.h"
+#include "Components/GameStateComponent.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(ModularGameState)
 
 void AModularGameStateBase::PreInitializeComponents()
 {
-    Super::PreInitializeComponents();
+	Super::PreInitializeComponents();
 
-    if ( auto * gi = GetGameInstance() )
-    {
-        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
-        {
-            system->AddReceiver( this );
-        }
-    }
+	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
 }
 
 void AModularGameStateBase::BeginPlay()
 {
-    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
+	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
-    Super::BeginPlay();
+	Super::BeginPlay();
 }
 
-void AModularGameStateBase::EndPlay( const EEndPlayReason::Type EndPlayReason )
+void AModularGameStateBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
-    {
-        system->RemoveReceiver( this );
-    }
+	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
 
-    Super::EndPlay( EndPlayReason );
+	Super::EndPlay(EndPlayReason);
 }
+
 
 void AModularGameState::PreInitializeComponents()
 {
-    Super::PreInitializeComponents();
+	Super::PreInitializeComponents();
 
-    if ( auto * gi = GetGameInstance() )
-    {
-        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
-        {
-            system->AddReceiver( this );
-        }
-    }
+	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
 }
 
 void AModularGameState::BeginPlay()
 {
-    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
+	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
-    Super::BeginPlay();
+	Super::BeginPlay();
 }
 
-void AModularGameState::EndPlay( const EEndPlayReason::Type EndPlayReason )
+void AModularGameState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
-    {
-        system->RemoveReceiver( this );
-    }
+	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
 
-    Super::EndPlay( EndPlayReason );
+	Super::EndPlay(EndPlayReason);
 }
 
 void AModularGameState::HandleMatchHasStarted()
 {
-    Super::HandleMatchHasStarted();
+	Super::HandleMatchHasStarted();
 
-    for ( TComponentIterator< UGameStateComponent > iterator( this ); iterator; ++iterator )
-    {
-        iterator->HandleMatchHasStarted();
-    }
+	TArray<UGameStateComponent*> ModularComponents;
+	GetComponents(ModularComponents);
+	for (UGameStateComponent* Component : ModularComponents)
+	{
+		Component->HandleMatchHasStarted();
+	}
 }
+

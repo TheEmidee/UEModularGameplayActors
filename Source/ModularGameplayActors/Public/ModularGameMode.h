@@ -1,40 +1,44 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #pragma once
 
-#include <GameFramework/GameMode.h>
+#include "GameFramework/GameMode.h"
 
 #include "ModularGameMode.generated.h"
 
+class UObject;
+
 /** Pair this with a ModularGameStateBase */
-UCLASS( Blueprintable )
+UCLASS(Blueprintable)
 class MODULARGAMEPLAYACTORS_API AModularGameModeBase : public AGameModeBase
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-    AModularGameModeBase();
+	AModularGameModeBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-    void PreInitializeComponents() override;
+	virtual void PreInitializeComponents() override;
 
 protected:
-    void BeginPlay() override;
-    void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
+    virtual void BeginPlay() override;
+    virtual void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
 };
 
 /** Pair this with a ModularGameState */
-UCLASS( Blueprintable )
+UCLASS(Blueprintable)
 class MODULARGAMEPLAYACTORS_API AModularGameMode : public AGameMode
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-    AModularGameMode();
+	AModularGameMode(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-    bool ReadyToStartMatch_Implementation() override;
-    void PreInitializeComponents() override;
-    void InitGameState() override;
+	virtual bool ReadyToStartMatch_Implementation() override;
+    virtual void PreInitializeComponents() override;
+    virtual void InitGameState() override;
 
 protected:
-    void BeginPlay() override;
-    void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
-    void HandleMatchHasStarted() override;
+    virtual void BeginPlay() override;
+    virtual void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
+    virtual void HandleMatchHasStarted() override;
 };

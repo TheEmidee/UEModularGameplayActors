@@ -1,33 +1,27 @@
-#include "ModularAIController.h"
+// Copyright Epic Games, Inc. All Rights Reserved.
 
-#include <Components/GameFrameworkComponentManager.h>
+#include "ModularAIController.h"
+#include "Components/GameFrameworkComponentManager.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(ModularAIController)
 
 void AModularAIController::PreInitializeComponents()
 {
-    Super::PreInitializeComponents();
+	Super::PreInitializeComponents();
 
-    if ( auto * gi = GetGameInstance() )
-    {
-        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
-        {
-            system->AddReceiver( this );
-        }
-    }
+	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
 }
 
 void AModularAIController::BeginPlay()
 {
-    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
+	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
-    Super::BeginPlay();
+	Super::BeginPlay();
 }
 
-void AModularAIController::EndPlay( const EEndPlayReason::Type EndPlayReason )
+void AModularAIController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
-    {
-        system->RemoveReceiver( this );
-    }
+	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
 
-    Super::EndPlay( EndPlayReason );
+	Super::EndPlay(EndPlayReason);
 }

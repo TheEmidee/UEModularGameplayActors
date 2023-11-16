@@ -1,63 +1,56 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #include "ModularPlayerState.h"
 
-#include <Components/GameFrameworkComponentManager.h>
-#include <Components/PlayerStateComponent.h>
+#include "Components/GameFrameworkComponentManager.h"
+#include "Components/PlayerStateComponent.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(ModularPlayerState)
 
 void AModularPlayerState::PreInitializeComponents()
 {
-    Super::PreInitializeComponents();
+	Super::PreInitializeComponents();
 
-    if ( auto * gi = GetGameInstance() )
-    {
-        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
-        {
-            system->AddReceiver( this );
-        }
-    }
+	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
 }
 
 void AModularPlayerState::BeginPlay()
 {
-    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
+	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
-    Super::BeginPlay();
+	Super::BeginPlay();
 }
 
-void AModularPlayerState::EndPlay( const EEndPlayReason::Type EndPlayReason )
+void AModularPlayerState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
-    {
-        system->RemoveReceiver( this );
-    }
+	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
 
-    Super::EndPlay( EndPlayReason );
+	Super::EndPlay(EndPlayReason);
 }
 
 void AModularPlayerState::Reset()
 {
-    Super::Reset();
+	Super::Reset();
 
-    for ( TComponentIterator< UPlayerStateComponent > iterator( this ); iterator; ++iterator )
-    {
-        iterator->Reset();
-    }
+	TArray<UPlayerStateComponent*> ModularComponents;
+	GetComponents(ModularComponents);
+	for (UPlayerStateComponent* Component : ModularComponents)
+	{
+		Component->Reset();
+	}
 }
 
-void AModularPlayerState::CopyProperties( APlayerState * PlayerState )
+void AModularPlayerState::CopyProperties(APlayerState* PlayerState)
 {
-    Super::Reset();
+	Super::CopyProperties(PlayerState);
 
-    TArray< UPlayerStateComponent * > ModularComponents;
-    GetComponents( ModularComponents );
-
-    TArray< UPlayerStateComponent * > OtherModularComponents;
-    PlayerState->GetComponents( OtherModularComponents );
-
-    for ( UPlayerStateComponent * Component : ModularComponents )
-    {
-        for ( UPlayerStateComponent * OtherComponent : OtherModularComponents )
-        {
-            Component->CopyProperties( OtherComponent );
-        }
-    }
+	TInlineComponentArray<UPlayerStateComponent*> PlayerStateComponents;
+	GetComponents(PlayerStateComponents);
+	for (UPlayerStateComponent* SourcePSComp : PlayerStateComponents)
+	{
+		if (UPlayerStateComponent* TargetComp = Cast<UPlayerStateComponent>(static_cast<UObject*>(FindObjectWithOuter(PlayerState, SourcePSComp->GetClass(), SourcePSComp->GetFName()))))
+		{
+			SourcePSComp->CopyProperties(TargetComp);
+		}
+	}
 }

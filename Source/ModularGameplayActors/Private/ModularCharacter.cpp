@@ -1,37 +1,31 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #include "ModularCharacter.h"
 
 #include "ModularPawnComponent.h"
+#include "Components/GameFrameworkComponentManager.h"
 
-#include <Components/GameFrameworkComponentManager.h>
+#include UE_INLINE_GENERATED_CPP_BY_NAME(ModularCharacter)
 
 void AModularCharacter::PreInitializeComponents()
 {
-    Super::PreInitializeComponents();
+	Super::PreInitializeComponents();
 
-    if ( auto * gi = GetGameInstance() )
-    {
-        if ( auto * system = gi->GetSubsystem< UGameFrameworkComponentManager >() )
-        {
-            system->AddReceiver( this );
-        }
-    }
+	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
 }
 
 void AModularCharacter::BeginPlay()
 {
-    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
+	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
 
-    Super::BeginPlay();
+	Super::BeginPlay();
 }
 
-void AModularCharacter::EndPlay( const EEndPlayReason::Type EndPlayReason )
+void AModularCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if ( auto * system = GetGameInstance()->GetSubsystem< UGameFrameworkComponentManager >() )
-    {
-        system->RemoveReceiver( this );
-    }
+	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
 
-    Super::EndPlay( EndPlayReason );
+	Super::EndPlay(EndPlayReason);
 }
 
 void AModularCharacter::UnPossessed()
