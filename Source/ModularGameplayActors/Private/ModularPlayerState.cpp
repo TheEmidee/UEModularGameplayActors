@@ -37,7 +37,7 @@ void AModularPlayerState::Reset()
 {
     Super::Reset();
 
-    for ( TComponentIterator < UPlayerStateComponent > iterator( this ); iterator; ++iterator )
+    for ( TComponentIterator< UPlayerStateComponent > iterator( this ); iterator; ++iterator )
     {
         iterator->Reset();
     }
