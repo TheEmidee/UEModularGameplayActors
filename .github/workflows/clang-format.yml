@@ -7,9 +7,7 @@ jobs:
     strategy:
       matrix:
         path:
-          - check: 'Source/GameBaseFramework'
-            exclude: ''
-          - check: 'Source/GameBaseFrameworkEditor'
+          - check: 'Source/'
             exclude: ''
     steps:
     - uses: actions/checkout@v3
