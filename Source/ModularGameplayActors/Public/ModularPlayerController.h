@@ -23,5 +23,9 @@ public:
 	//~ Begin APlayerController interface
 	virtual void ReceivedPlayer() override;
 	virtual void PlayerTick(float DeltaTime) override;
-	//~ End APlayerController interface
+
+protected:
+    virtual void OnPossess( APawn * aPawn ) override;
+    virtual void OnUnPossess() override;
+    //~ End APlayerController interface
 };

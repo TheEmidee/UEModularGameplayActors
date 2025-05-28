@@ -2,6 +2,7 @@
 
 #include "ModularPlayerController.h"
 
+#include "ModularPlayerControllerComponent.h"
 #include "Components/ControllerComponent.h"
 #include "Components/GameFrameworkComponentManager.h"
 
@@ -28,9 +29,9 @@ void AModularPlayerController::ReceivedPlayer()
 
 	Super::ReceivedPlayer();
 
-	TArray<UControllerComponent*> ModularComponents;
+	TArray< UModularPlayerControllerComponent * > ModularComponents;
 	GetComponents(ModularComponents);
-	for (UControllerComponent* Component : ModularComponents)
+    for ( UModularPlayerControllerComponent * Component : ModularComponents )
 	{
 		Component->ReceivedPlayer();
 	}
@@ -40,10 +41,34 @@ void AModularPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 
-	TArray<UControllerComponent*> ModularComponents;
+	TArray< UModularPlayerControllerComponent * > ModularComponents;
 	GetComponents(ModularComponents);
-	for (UControllerComponent* Component : ModularComponents)
+    for ( UModularPlayerControllerComponent * Component : ModularComponents )
 	{
 		Component->PlayerTick(DeltaTime);
 	}
+}
+
+void AModularPlayerController::OnPossess( APawn * aPawn )
+{
+    Super::OnPossess( aPawn );
+
+	TArray< UModularPlayerControllerComponent * > ModularComponents;
+    GetComponents( ModularComponents );
+    for ( UModularPlayerControllerComponent * Component : ModularComponents )
+    {
+        Component->OnPossess( aPawn );
+    }
+}
+
+void AModularPlayerController::OnUnPossess()
+{
+    Super::OnUnPossess();
+
+    TArray< UModularPlayerControllerComponent * > ModularComponents;
+    GetComponents( ModularComponents );
+    for ( UModularPlayerControllerComponent * Component : ModularComponents )
+    {
+        Component->OnUnPossess();
+    }
 }
