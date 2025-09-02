@@ -1,0 +1,8 @@
+#pragma once
+
+#include "NativeGameplayTags.h"
+
+MODULARGAMEPLAYACTORS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN( ModularGameplayTag_InitState_Spawned );
+MODULARGAMEPLAYACTORS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN( ModularGameplayTag_InitState_DataAvailable );
+MODULARGAMEPLAYACTORS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN( ModularGameplayTag_InitState_DataInitialized );
+MODULARGAMEPLAYACTORS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN( ModularGameplayTag_InitState_GameplayReady );
