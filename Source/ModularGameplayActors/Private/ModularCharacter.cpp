@@ -1,36 +1,32 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "ModularCharacter.h"
 
 #include "ModularPawnComponent.h"
 #include "Components/GameFrameworkComponentManager.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(ModularCharacter)
-
 void AModularCharacter::PreInitializeComponents()
 {
-	Super::PreInitializeComponents();
+    Super::PreInitializeComponents();
 
-	UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver(this);
+    UGameFrameworkComponentManager::AddGameFrameworkComponentReceiver( this );
 }
 
 void AModularCharacter::BeginPlay()
 {
-	UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent(this, UGameFrameworkComponentManager::NAME_GameActorReady);
+    UGameFrameworkComponentManager::SendGameFrameworkComponentExtensionEvent( this, UGameFrameworkComponentManager::NAME_GameActorReady );
 
-	Super::BeginPlay();
+    Super::BeginPlay();
 }
 
-void AModularCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AModularCharacter::EndPlay( const EEndPlayReason::Type EndPlayReason )
 {
-	UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver(this);
+    UGameFrameworkComponentManager::RemoveGameFrameworkComponentReceiver( this );
 
-	Super::EndPlay(EndPlayReason);
+    Super::EndPlay( EndPlayReason );
 }
 
 void AModularCharacter::UnPossessed()
 {
-    for ( TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator )
+    for (TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator)
     {
         iterator->OnUnPossessed();
     }
@@ -42,8 +38,37 @@ void AModularCharacter::PossessedBy( AController * new_controller )
 {
     Super::PossessedBy( new_controller );
 
-    for ( TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator )
+    for (TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator)
     {
         iterator->OnPossessedBy( new_controller );
+    }
+}
+
+void AModularCharacter::OnRep_Controller()
+{
+    Super::OnRep_Controller();
+
+    for (TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator)
+    {
+        iterator->OnRep_Controller();
+    }
+}
+
+void AModularCharacter::OnRep_PlayerState()
+{
+    Super::OnRep_PlayerState();
+
+    for (TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator)
+    {
+        iterator->OnRep_PlayerState();
+    }
+}
+
+void AModularCharacter::SetupPlayerInputComponent( UInputComponent * PlayerInputComponent )
+{
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
+    for (TComponentIterator< UModularPawnComponent > iterator( this ); iterator; ++iterator)
+    {
+        iterator->SetupPlayerInputComponent( PlayerInputComponent );
     }
 }

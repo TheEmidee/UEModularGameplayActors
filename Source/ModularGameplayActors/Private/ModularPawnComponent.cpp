@@ -15,6 +15,31 @@ void UModularPawnComponent::CheckDefaultInitialization()
     ContinueInitStateChain( StateChain );
 }
 
+void UModularPawnComponent::OnPossessedBy( AController * /*NewController*/ )
+{
+    CheckDefaultInitialization();
+}
+
+void UModularPawnComponent::OnUnPossessed()
+{
+    CheckDefaultInitialization();
+}
+
+void UModularPawnComponent::OnRep_Controller()
+{
+    CheckDefaultInitialization();
+}
+
+void UModularPawnComponent::OnRep_PlayerState()
+{
+    CheckDefaultInitialization();
+}
+
+void UModularPawnComponent::SetupPlayerInputComponent( UInputComponent * PlayerInputComponent )
+{
+    CheckDefaultInitialization();
+}
+
 void UModularPawnComponent::OnRegister()
 {
     Super::OnRegister();
@@ -43,15 +68,4 @@ void UModularPawnComponent::EndPlay( const EEndPlayReason::Type EndPlayReason )
 
 void UModularPawnComponent::BindToRequiredOnActorInitStateChanged()
 {
-}
-
-
-void UModularPawnComponent::OnPossessedBy( AController * /*NewController*/ )
-{
-    CheckDefaultInitialization();
-}
-
-void UModularPawnComponent::OnUnPossessed()
-{
-    CheckDefaultInitialization();
 }
