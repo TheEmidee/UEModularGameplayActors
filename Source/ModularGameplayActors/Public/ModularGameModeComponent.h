@@ -2,8 +2,8 @@
 
 #include "GameFramework/GameModeBase.h"
 
-#include <Components/GameFrameworkComponent.h>
-#include <CoreMinimal.h>
+#include "Components/GameFrameworkComponent.h"
+#include "CoreMinimal.h"
 
 #include "ModularGameModeComponent.generated.h"
 

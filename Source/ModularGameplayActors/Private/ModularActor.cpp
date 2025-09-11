@@ -1,6 +1,6 @@
 #include "ModularActor.h"
 
-#include <Components/GameFrameworkComponentManager.h>
+#include "Components/GameFrameworkComponentManager.h"
 
 AModularActor::AModularActor()
 {
