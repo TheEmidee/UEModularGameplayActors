@@ -9,18 +9,21 @@
 class UObject;
 
 /** Minimal class that supports extension by game feature plugins */
-UCLASS(Blueprintable)
+UCLASS( Blueprintable )
 class MODULARGAMEPLAYACTORS_API AModularCharacter : public ACharacter
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	//~ Begin AActor Interface
-	virtual void PreInitializeComponents() override;
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	//~ End AActor Interface
+    //~ Begin AActor Interface
+    virtual void PreInitializeComponents() override;
+    virtual void BeginPlay() override;
+    virtual void EndPlay( const EEndPlayReason::Type EndPlayReason ) override;
+    //~ End AActor Interface
 
     void UnPossessed() override;
     void PossessedBy( AController * new_controller ) override;
+    void OnRep_Controller() override;
+    void OnRep_PlayerState() override;
+    void SetupPlayerInputComponent(UInputComponent * PlayerInputComponent) override;
 };
